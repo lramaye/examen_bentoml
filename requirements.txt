@@ -32,7 +32,7 @@ multidict
 numpy
 nvidia-ml-py
 opentelemetry-api
-opentelemetry-instrumentation0
+opentelemetry-instrumentation
 opentelemetry-instrumentation-aiohttp-client
 opentelemetry-instrumentation-asgi
 opentelemetry-sdk
