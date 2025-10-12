@@ -33,7 +33,13 @@ source bentoml-env/bin/activate
 pip install -r requirements.txt
 ```
 
-### prepare data
+### sequence
 ```bash
+cd examen_bentoml
 python3 src/prepare_data.py
+python3 src/normalize.py
+python3 src/grid_search.py
+python3 src/train_model.py
 ```
+
+### bentoml

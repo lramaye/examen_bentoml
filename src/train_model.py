@@ -1,38 +1,47 @@
-import sklearn
+import os
+import pickle
 import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
-import numpy as np
-import bentoml
-from bentoml.io import NumpyNdarray
+from sklearn.metrics import mean_squared_error
 
-X_train = pd.read_csv('data/processed/X_train.csv')
-X_test = pd.read_csv('data/processed/X_test.csv')
-y_train = pd.read_csv('data/processed/y_train.csv')
-y_test = pd.read_csv('data/processed/y_test.csv')
-y_train = np.ravel(y_train)
-y_test = np.ravel(y_test)
+# Chargement des données d'entraînement et de test
+X_train = pd.read_csv("data/processed/X_train_scaled.csv")
+X_test = pd.read_csv("data/processed/X_test_scaled.csv")
+y_train = pd.read_csv("data/processed/y_train.csv").values.flatten()
+y_test = pd.read_csv("data/processed/y_test.csv").values.flatten()
 
-rf_regressor = RandomForestRegressor(n_jobs=-1, random_state=42)
+# Chargement de grid_search
+#params_path = os.path.join("..", "..", "models", "best_params.pkl")
+params_path = "models/best_params.pkl"
+if not os.path.exists(params_path):
+    raise FileNotFoundError(
+        f"Fichier introuvable: {params_path}. "
+    )
 
-#--Train the model
-rf_regressor.fit(X_train, y_train)
+with open(params_path, "rb") as f:
+    best_params = pickle.load(f)
 
-#--Test the model
-rf_regressor.predict(X_test)
+# random_state
+if "random_state" not in best_params:
+    best_params["random_state"] = 42
 
-#--Get the model accuracy
-accuracy = rf_regressor.score(X_test, y_test)
+model = RandomForestRegressor(**best_params)
 
-print(f"Model accuracy: {accuracy}")
+# Fit du modèle
+model.fit(X_train, y_train)
 
-# test the model on a single observation
-test_data = X_test.iloc[[0]]
-# print the actual label
-print(f"Actual label: {y_test[0]}")
-# print the predicted label
-print(f"Predicted label: {rf_regressor.predict(test_data)[0]}")
+# Éval sur le jeu de test
+y_pred = model.predict(X_test)
+mse_test = mean_squared_error(y_test, y_pred)
+print("Meilleurs hyperparamètres :", best_params)
+print("MSE :", mse_test)
 
-# Enregistrer le modèle dans le Model Store de BentoML
-model_ref = bentoml.sklearn.save_model("accidents_rf", rf_regressor)
+# Sauvegarde du meilleur modèle entraîné
+#output_dir = os.path.join("..", "..", "models", "models")
+output_dir = "models"
+os.makedirs(output_dir, exist_ok=True)
+model_path = os.path.join(output_dir, "best_model.pkl")
+with open(model_path, "wb") as f:
+    pickle.dump(model, f)
 
-print(f"Modèle enregistré sous : {model_ref}")
+print(f"Modèle sauvegardé dans : {model_path}")
