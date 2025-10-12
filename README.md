@@ -1,4 +1,4 @@
-# Examen BentoML (Python 3.11 + BentoML 1.4.26)
+# Examen BentoML (Python 3.11 + BentoML 1.1.0)
 
 Ce répertoire contient une application BentoML de régression Random Forest (admissions étudiants) avec authentification JWT et un pipeline de préparation/entraînement.
 

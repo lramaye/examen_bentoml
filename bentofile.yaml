@@ -13,7 +13,7 @@ python:
     - numpy
     - pandas
     - scikit-learn
-    - bentoml==1.4.26
+    - bentoml==1.1.0
     - pydantic
     - requests
     - PyJWT
