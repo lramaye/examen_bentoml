@@ -1,6 +1,6 @@
-service:
-  name: admissions_prediction
-  version: 1.0.0
+service: "src.service:rf_service"
+name: admissions_prediction
+version: "1.0.0"
 description: "Random Forest Regressor Service for predicting accident severity"
 labels:
   owner: "DataScientest"
