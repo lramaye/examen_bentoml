@@ -55,9 +55,9 @@ pip install -r requirements.txt
 ## Préparation des données et entraînement
 Exécuter la séquence suivante depuis la racine du projet (environnement activé):
 ```
-python3.11 src/prepare_data.py
-python3.11 src/grid_search.py     # écrit models/best_params.pkl
-python3.11 src/train_model.py     # entraîne et enregistre le modèle BentoML "students_rf"
+python3 src/prepare_data.py
+python3 src/grid_search.py     # écrit models/best_params.pkl
+python3 src/train_model.py     # entraîne et enregistre le modèle BentoML "students_rf"
 ```
 Vérifier que le modèle est bien dans le Model Store BentoML:
 ```
@@ -101,5 +101,5 @@ python src/test.py
 
 ## Notes de compatibilité
 - Python 3.11: les dépendances de requirements.txt sont compatibles (numpy, pandas, scikit-learn, PyJWT, etc.).
-- BentoML 1.4.26: utilisé dans requirements.txt et épinglé dans bentofile.yaml. Le service utilise un Runner sklearn et des endpoints JSON compatibles 1.4.x.
+- BentoML 1.1.0: utilisé dans requirements.txt et épinglé dans bentofile.yaml. Le service utilise un Runner sklearn et des endpoints JSON compatibles 1.4.x.
 - Les chemins sont relatifs à la racine du projet; exécutez les scripts depuis cette racine.

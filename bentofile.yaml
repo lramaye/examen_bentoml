@@ -1,5 +1,3 @@
-name: rf_service
-version: 0.1.0
 service: "src.service:rf_service"
 description: "Random Forest Regressor Service for predicting accident severity"
 labels:
