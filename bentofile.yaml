@@ -1,5 +1,4 @@
 service: "src.service:rf_service"
-name: admissions_prediction
 description: "Random Forest Regressor Service for predicting accident severity"
 labels:
   owner: "DataScientest"
@@ -19,3 +18,5 @@ python:
     - pydantic
     - requests
     - PyJWT
+models: # The model to be used for building the Bento.
+- students_rf:latest
