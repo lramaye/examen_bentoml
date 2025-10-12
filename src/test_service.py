@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 from starlette.testclient import TestClient
 
-from src.service import (
+from service import (
     rf_service,
     create_jwt_token,
     JWT_SECRET_KEY,
