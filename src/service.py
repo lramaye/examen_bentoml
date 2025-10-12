@@ -12,7 +12,7 @@ from datetime import datetime, timedelta
 JWT_SECRET_KEY = "your_jwt_secret_key_here"
 JWT_ALGORITHM = "HS256"
 
-# User credentials for authentication
+# specific users and credentials
 USERS = {
     "user123": "password123",
     "user456": "password456"
@@ -21,7 +21,7 @@ USERS = {
 # Middleware JWT
 class JWTAuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
-        # On protège uniquement la route prédiction
+        # route predict
         if request.url.path == "/v1/models/rf_regressor/predict":
             token = request.headers.get("Authorization")
             if not token:
@@ -50,17 +50,17 @@ class InputModel(BaseModel):
     CGPA: float
     Research: int
 
-# Load the model runner
+# model runner
 students_rf_runner = bentoml.sklearn.get("students_rf:latest").to_runner()
 
-# Définition du service BentoML (compatible BentoML 1.1)
+# service BentoML
 rf_service = bentoml.Service("rf_service", runners=[students_rf_runner])
 
 # Ajout du middleware JWT
 rf_service.add_asgi_middleware(JWTAuthMiddleware)
 
-# Endpoint pour login
-@rf_service.api(input=JSON(), output=JSON())
+# Endpoint login
+@rf_service.api(input=JSON(), output=JSON(), route="/login")
 def login(credentials: dict) -> dict:
     username = credentials.get("username")
     password = credentials.get("password")
@@ -71,15 +71,14 @@ def login(credentials: dict) -> dict:
     else:
         return JSONResponse(status_code=401, content={"detail": "Invalid credentials"})
 
-# Endpoint de prédiction
+# Endpoint predict
 @rf_service.api(
     input=JSON(pydantic_model=InputModel),
     output=JSON(),
     route="/v1/models/rf_regressor/predict"
 )
 async def classify(input_data: InputModel, ctx: Context) -> dict:
-    # Authentification via middleware (BentoML 1.1 RequestContext has no `.state`)
-    # Extraire l'utilisateur depuis le header Authorization validé par le middleware
+    # Authentification
     auth = ctx.request.headers.get("authorization")
     user = None
     if auth:

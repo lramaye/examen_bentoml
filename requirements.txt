@@ -45,6 +45,7 @@ pip-requirements-parser
 prometheus_client
 propcache
 psutil
+pytest
 pydantic
 pydantic_core
 Pygments
