@@ -73,6 +73,7 @@ Par défaut, l’API écoute sur http://127.0.0.1:3000
 
 Tester les endpoints avec le script fourni (authentification + prédiction):
 ```
+source .venv/bin/activate
 python src/test.py
 ```
 Ce script:

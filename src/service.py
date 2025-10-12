@@ -78,9 +78,19 @@ def login(credentials: dict) -> dict:
     route="/v1/models/rf_regressor/predict"
 )
 async def classify(input_data: InputModel, ctx: Context) -> dict:
-    # Authentification via middleware
-    request = ctx.request
-    user = getattr(request.state, "user", None)
+    # Authentification via middleware (BentoML 1.1 RequestContext has no `.state`)
+    # Extraire l'utilisateur depuis le header Authorization validé par le middleware
+    auth = ctx.request.headers.get("authorization")
+    user = None
+    if auth:
+        try:
+            token = auth.split()[1]
+            payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
+            user = payload.get("sub")
+        except jwt.ExpiredSignatureError:
+            user = None
+        except jwt.InvalidTokenError:
+            user = None
 
     # Conversion en array
     input_series = np.array([
