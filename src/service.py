@@ -56,45 +56,57 @@ rf_service = bentoml.Service("rf_service", runners=[students_rf_runner])
 # Add the JWTAuthMiddleware to the service
 rf_service.add_asgi_middleware(JWTAuthMiddleware)
 
-# Create an API endpoint for the service
-@rf_service.api(input=JSON(), output=JSON())
-def login(credentials: dict) -> dict:
-    username = credentials.get("username")
-    password = credentials.get("password")
+# Définition du service avec la nouvelle API
+@bentoml.service(name="rf_service")
+class RFService:
+    runners = [students_rf_runner]
 
-    if username in USERS and USERS[username] == password:
-        token = create_jwt_token(username)
-        return {"token": token}
-    else:
-        return JSONResponse(status_code=401, content={"detail": "Invalid credentials"})
+    # Endpoint pour le login
+    @bentoml.api(input=JSON(), output=JSON())
+    def login(self, credentials: dict) -> dict:
+        username = credentials.get("username")
+        password = credentials.get("password")
 
-# Create an API endpoint for the service
-@rf_service.api(
-    input=JSON(pydantic_model=InputModel),
-    output=JSON(),
-    route='/v1/models/rf_regressor/predict'
-)
-async def classify(input_data: InputModel, ctx: bentoml.Context) -> dict:
-    request = ctx.request
-    user = request.state.user if hasattr(request.state, 'user') else None
+        if username in USERS and USERS[username] == password:
+            token = create_jwt_token(username)
+            return {"token": token}
+        else:
+            # Starlette est compatible avec BentoML pour les réponses HTTP
+            return JSONResponse(status_code=401, content={"detail": "Invalid credentials"})
 
-    # Convert the input data to a numpy array
-    input_series = np.array([input_data.GRE_score,input_data.TOEFL_score,input_data.University_Rating
-                                ,input_data.SOP,input_data.LOR,input_data.CGPA,input_data.Research])
+    # Endpoint de prédiction
+    @bentoml.api(
+        input=JSON(pydantic_model="InputModel"),
+        output=JSON(),
+        route="/v1/models/rf_regressor/predict"
+    )
+    async def classify(self, input_data, ctx: bentoml.Context) -> dict:
+        # Authentification optionnelle
+        request = ctx.request
+        user = getattr(request.state, "user", None)
 
-    result = await students_rf_runner.predict.async_run(input_series.reshape(1, -1))
+        # Convertir les données d'entrée
+        input_series = np.array([
+            input_data.GRE_score,
+            input_data.TOEFL_score,
+            input_data.University_Rating,
+            input_data.SOP,
+            input_data.LOR,
+            input_data.CGPA,
+            input_data.Research
+        ])
 
-    return {
-        "prediction": result.tolist(),
-        "user": user
-    }
+        # Prédiction asynchrone avec le runner
+        result = await students_rf_runner.predict.async_run(input_series.reshape(1, -1))
 
-# Function to create a JWT token
-def create_jwt_token(user_id: str):
+        return {
+            "prediction": result.tolist(),
+            "user": user
+        }
+
+# Génération de token JWT
+def create_jwt_token(user_id: str) -> str:
     expiration = datetime.utcnow() + timedelta(hours=1)
-    payload = {
-        "sub": user_id,
-        "exp": expiration
-    }
+    payload = {"sub": user_id, "exp": expiration}
     token = jwt.encode(payload, JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
     return token
