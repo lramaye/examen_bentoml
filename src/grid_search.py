@@ -5,7 +5,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.ensemble import RandomForestRegressor
 
 # Chargement uniquement des données d'entraînement
-X_train = pd.read_csv("data/processed/X_train_scaled.csv")
+X_train = pd.read_csv("data/processed/X_train.csv")
 y_train = pd.read_csv("data/processed/y_train.csv").values.flatten()
 
 # Définition du modèle et de la grille d'hyperparamètres
