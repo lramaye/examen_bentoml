@@ -57,7 +57,7 @@ pytz
 PyYAML
 pyzmq
 requests
-rich0
+rich
 rich-toolkit
 schema
 scikit-learn
