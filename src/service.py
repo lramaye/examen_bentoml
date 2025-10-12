@@ -54,7 +54,7 @@ class InputModel(BaseModel):
 students_rf_runner = bentoml.sklearn.get("students_rf:latest").to_runner()
 
 # service BentoML
-rf_service = bentoml.Service("rf_service", runners=[students_rf_runner])
+rf_service = bentoml.Service(name="admissions_prediction", runners=[students_rf_runner])
 
 # Ajout du middleware JWT
 rf_service.add_asgi_middleware(JWTAuthMiddleware)
