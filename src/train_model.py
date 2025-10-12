@@ -4,7 +4,6 @@ import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
 import bentoml
-from bentoml.io import NumpyNdarray
 
 # Chargement des données d'entraînement et de test
 X_train = pd.read_csv("data/processed/X_train.csv")

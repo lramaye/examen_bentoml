@@ -1,6 +1,6 @@
 import numpy as np
 import bentoml
-from bentoml.io.json import JSON
+from bentoml.io import JSON
 from bentoml import Context
 from pydantic import BaseModel
 from starlette.responses import JSONResponse

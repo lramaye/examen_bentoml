@@ -46,7 +46,7 @@ pip install -r requirements.txt
 Linux/macOS (bash/zsh):
 ```
 cd ~/examen_bentoml
-python3.11 -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
 pip install -U pip
 pip install -r requirements.txt
@@ -55,9 +55,9 @@ pip install -r requirements.txt
 ## Préparation des données et entraînement
 Exécuter la séquence suivante depuis la racine du projet (environnement activé):
 ```
-python src/prepare_data.py
-python src/grid_search.py     # écrit models/best_params.pkl
-python src/train_model.py     # entraîne et enregistre le modèle BentoML "students_rf"
+python3 src/prepare_data.py
+python3 src/grid_search.py     # écrit models/best_params.pkl
+python3 src/train_model.py     # entraîne et enregistre le modèle BentoML "students_rf"
 ```
 Vérifier que le modèle est bien dans le Model Store BentoML:
 ```
