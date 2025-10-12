@@ -2,13 +2,14 @@ service: "src.service:rf_service"
 description: "Random Forest Regressor Service for predicting accident severity"
 labels:
   owner: "team"
-  project: "accidents_rf"
+  project: "students_rf"
 
 include:
   - src/
   - data/
 
 python:
+  version: "3.11"
   packages:
     - numpy
     - pandas

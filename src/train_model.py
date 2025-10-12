@@ -7,8 +7,8 @@ import bentoml
 from bentoml.io import NumpyNdarray
 
 # Chargement des données d'entraînement et de test
-X_train = pd.read_csv("data/processed/X_train_scaled.csv")
-X_test = pd.read_csv("data/processed/X_test_scaled.csv")
+X_train = pd.read_csv("data/processed/X_train.csv")
+X_test = pd.read_csv("data/processed/X_test.csv")
 y_train = pd.read_csv("data/processed/y_train.csv").values.flatten()
 y_test = pd.read_csv("data/processed/y_test.csv").values.flatten()
 
@@ -53,6 +53,6 @@ print("MSE :", mse_test)
 #print(f"Modèle sauvegardé dans : {model_path}")
 
 # Enregistrer le modèle dans le Model Store de BentoML
-model_ref = bentoml.sklearn.save_model("accidents_rf", model)
+model_ref = bentoml.sklearn.save_model("students_rf", model)
 
 print(f"Modèle enregistré sous : {model_ref}")
