@@ -27,7 +27,7 @@ def download_csv(url: str, raw_dir: str, filename: str = "admission.csv") -> str
 
 def prepare_dataset(raw_csv_path: str) -> pd.DataFrame:
 
-    df = pd.read_csv(raw_csv_path, sep=",", header=None)
+    df = pd.read_csv(raw_csv_path, sep=",", header=0)
 
     # renommage des colonnes car des espaces sont presents
     columns = [
