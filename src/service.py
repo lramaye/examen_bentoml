@@ -1,6 +1,7 @@
 import numpy as np
 import bentoml
-from bentoml.io import NumpyNdarray, JSON
+from bentoml.io import NumpyNdarray
+from bentoml.io.json import JSON
 from pydantic import BaseModel, Field
 from starlette.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware

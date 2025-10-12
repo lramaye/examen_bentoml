@@ -56,7 +56,6 @@ pip install -r requirements.txt
 Exécuter la séquence suivante depuis la racine du projet (environnement activé):
 ```
 python src/prepare_data.py
-python src/normalize.py
 python src/grid_search.py     # écrit models/best_params.pkl
 python src/train_model.py     # entraîne et enregistre le modèle BentoML "students_rf"
 ```
@@ -68,7 +67,7 @@ bentoml models list
 ## Servir le service localement (sans Docker)
 Lancer le service BentoML directement depuis le code source:
 ```
-bentoml serve src.service:rf_service --reload
+bentoml serve src.service:rf_clf_service --reload
 ```
 Par défaut, l’API écoute sur http://127.0.0.1:3000
 
