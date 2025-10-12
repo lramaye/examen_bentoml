@@ -32,12 +32,12 @@ multidict==6.7.0
 numpy==2.3.3
 nvidia-ml-py==13.580.82
 opentelemetry-api==1.18.0
-opentelemetry-instrumentation==0.58b0
-opentelemetry-instrumentation-aiohttp-client==0.58b0
-opentelemetry-instrumentation-asgi==0.58b0
+opentelemetry-instrumentation==0.39b0
+opentelemetry-instrumentation-aiohttp-client==0.39b0
+opentelemetry-instrumentation-asgi==0.39b0
 opentelemetry-sdk==1.37.0
-opentelemetry-semantic-conventions==0.58b0
-opentelemetry-util-http==0.58b0
+opentelemetry-semantic-conventions==0.39b0
+opentelemetry-util-http==0.39b0
 packaging==25.0
 pandas==2.3.3
 pathspec==0.12.1
