@@ -52,7 +52,7 @@ class InputModel(BaseModel):
 students_rf_runner = bentoml.sklearn.get("students_rf:latest").to_runner()
 
 # Create a service API
-rf_service = bentoml.Service("rf_clf_service", runners=[students_rf_runner])
+rf_service = bentoml.Service("rf_service", runners=[students_rf_runner])
 
 # Add the JWTAuthMiddleware to the service
 rf_service.add_asgi_middleware(JWTAuthMiddleware)

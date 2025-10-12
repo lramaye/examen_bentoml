@@ -9,7 +9,6 @@ include:
   - data/
 
 python:
-  version: "3.11"
   packages:
     - numpy
     - pandas

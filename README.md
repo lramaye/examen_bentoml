@@ -67,7 +67,7 @@ bentoml models list
 ## Servir le service localement (sans Docker)
 Lancer le service BentoML directement depuis le code source:
 ```
-bentoml serve src.service:rf_clf_service --reload
+bentoml serve src.service:rf_service --reload
 ```
 Par défaut, l’API écoute sur http://127.0.0.1:3000
 
