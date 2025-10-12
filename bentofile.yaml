@@ -1,5 +1,4 @@
 service: "src.service:rf_service"
-version: "1.0.0"
 description: "Predict the chance of admission of a student in a university"
 labels:
   owner: "DataScientest"
