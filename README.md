@@ -29,7 +29,7 @@ Afin de pouvoir commencer le projet vous devez suivre les étapes suivantes:
 ### environnement virtuel
 ```bash
 virtualenv bentoml-env
-source bentoml-env\Scripts\activate
+source bentoml-env/bin/activate
 pip install -r requirements.txt
 ```
 
