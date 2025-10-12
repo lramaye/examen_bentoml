@@ -50,12 +50,8 @@ class InputModel(BaseModel):
 # Get the model from the Model Store
 students_rf_runner = bentoml.sklearn.get("students_rf:latest").to_runner()
 
-# Create a service API (backward-compatible with environments where `runners` is not supported)
-try:
-    rf_service = bentoml.Service("rf_service", runners=[students_rf_runner])
-except TypeError:
-    # Fallback for older BentoML versions without the `runners` parameter
-    rf_service = bentoml.Service("rf_service")
+# Create the service for BentoML 1.4.x (requires runners)
+rf_service = bentoml.Service("rf_service", runners=[students_rf_runner])
 
 # Add the JWTAuthMiddleware to the service
 rf_service.add_asgi_middleware(JWTAuthMiddleware)
@@ -76,7 +72,7 @@ def login(credentials: dict) -> dict:
 @rf_service.api(
     input=JSON(pydantic_model=InputModel),
     output=JSON(),
-    route='v1/models/rf_regressor/predict'
+    route='/v1/models/rf_regressor/predict'
 )
 async def classify(input_data: InputModel, ctx: bentoml.Context) -> dict:
     request = ctx.request
