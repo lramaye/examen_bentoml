@@ -1,0 +1,19 @@
+service: "src.service:rf_service"
+description: "Random Forest Regressor Service for predicting accident severity"
+labels:
+  owner: "team"
+  project: "accidents_rf"
+
+include:
+  - src/
+  - data/
+
+python:
+  packages:
+    - numpy
+    - pandas
+    - scikit-learn
+    - bentoml==1.4.26
+    - pydantic
+    - requests
+    - PyJWT

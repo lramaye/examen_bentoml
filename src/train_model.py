@@ -3,6 +3,8 @@ import pickle
 import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
+import bentoml
+from bentoml.io import NumpyNdarray
 
 # Chargement des données d'entraînement et de test
 X_train = pd.read_csv("data/processed/X_train_scaled.csv")
@@ -33,15 +35,24 @@ model.fit(X_train, y_train)
 # Éval sur le jeu de test
 y_pred = model.predict(X_test)
 mse_test = mean_squared_error(y_test, y_pred)
+# Get the model accuracy
+accuracy = model.score(X_test, y_test)
+
+print(f"Model accuracy: {accuracy}")
 print("Meilleurs hyperparamètres :", best_params)
 print("MSE :", mse_test)
 
 # Sauvegarde du meilleur modèle entraîné
 #output_dir = os.path.join("..", "..", "models", "models")
-output_dir = "models"
-os.makedirs(output_dir, exist_ok=True)
-model_path = os.path.join(output_dir, "best_model.pkl")
-with open(model_path, "wb") as f:
-    pickle.dump(model, f)
+#output_dir = "models"
+#os.makedirs(output_dir, exist_ok=True)
+#model_path = os.path.join(output_dir, "best_model.pkl")
+#with open(model_path, "wb") as f:
+#    pickle.dump(model, f)
 
-print(f"Modèle sauvegardé dans : {model_path}")
+#print(f"Modèle sauvegardé dans : {model_path}")
+
+# Enregistrer le modèle dans le Model Store de BentoML
+model_ref = bentoml.sklearn.save_model("accidents_rf", model)
+
+print(f"Modèle enregistré sous : {model_ref}")
