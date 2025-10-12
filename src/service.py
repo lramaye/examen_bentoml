@@ -50,8 +50,12 @@ class InputModel(BaseModel):
 # Get the model from the Model Store
 students_rf_runner = bentoml.sklearn.get("students_rf:latest").to_runner()
 
-# Create a service API
-rf_service = bentoml.Service("rf_service", runners=[students_rf_runner])
+# Create a service API (backward-compatible with environments where `runners` is not supported)
+try:
+    rf_service = bentoml.Service("rf_service", runners=[students_rf_runner])
+except TypeError:
+    # Fallback for older BentoML versions without the `runners` parameter
+    rf_service = bentoml.Service("rf_service")
 
 # Add the JWTAuthMiddleware to the service
 rf_service.add_asgi_middleware(JWTAuthMiddleware)
