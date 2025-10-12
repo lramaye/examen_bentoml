@@ -10,6 +10,7 @@ attrs==25.4.0
 bentoml==1.4.26
 cattrs==23.1.2
 certifi==2025.10.5
+charset-normalizer==3.4.3
 click==8.3.0
 click-option-group==0.5.9
 cloudpickle==3.1.1
@@ -54,6 +55,7 @@ python-multipart==0.0.20
 pytz==2025.2
 PyYAML==6.0.3
 pyzmq==27.1.0
+requests==2.32.5
 rich==14.2.0
 rich-toolkit==0.15.1
 schema==0.7.8
@@ -69,6 +71,7 @@ tornado==6.5.2
 typing-inspection==0.4.2
 typing_extensions==4.15.0
 tzdata==2025.2
+urllib3==2.5.0
 uvicorn==0.37.0
 watchfiles==1.1.0
 wrapt==1.17.3
