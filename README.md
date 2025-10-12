@@ -88,11 +88,11 @@ bentoml build
 ```
 Containeriser le Bento en image Docker:
 ```
-bentoml containerize rf_clf_service:latest
+bentoml containerize rf_service:latest
 ```
 Lancer le conteneur:
 ```
-docker run --rm -p 3000:3000 rf_clf_service:latest
+docker run --rm -p 3000:3000 rf_service:latest
 ```
 Puis tester à nouveau:
 ```
