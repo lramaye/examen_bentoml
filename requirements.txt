@@ -7,7 +7,7 @@ annotated-types
 anyio
 asgiref
 attrs
-bentoml==1.1.0
+bentoml==1.1.11
 cattrs
 certifi
 charset-normalizer
