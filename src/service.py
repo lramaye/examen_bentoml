@@ -64,7 +64,7 @@ class RFService:
         cls.add_asgi_middleware(JWTAuthMiddleware)
 
     # Endpoint pour login
-    @bentoml.api(input=JSON(), output=JSON())
+    @bentoml.api(input_spec=JSON(), output_spec=JSON())
     def login(self, credentials: dict) -> dict:
         username = credentials.get("username")
         password = credentials.get("password")
