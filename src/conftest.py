@@ -1,10 +1,13 @@
 import os
 import shutil
 import tempfile
+import sys
+from pathlib import Path
 import pytest
 
 # Désactiver Prometheus/Metrics pour toute la session Pytest, avant tout import de BentoML
 _TMP_PROM_DIR = None
+
 
 def pytest_sessionstart(session):
     global _TMP_PROM_DIR
@@ -12,9 +15,24 @@ def pytest_sessionstart(session):
     os.environ.setdefault("BENTOML_DISABLE_PROMETHEUS", "true")
     os.environ.setdefault("BENTOML_DISABLE_METRICS", "1")
 
+    # Ajouter les chemins nécessaires pour que `import service` et `from src import service` fonctionnent
+    src_dir = Path(__file__).resolve().parent  # .../src
+    repo_root = src_dir.parent                 # projet racine
+
+    # S'assurer que le projet racine est dans sys.path (permet `from src import service`)
+    root_str = str(repo_root)
+    if root_str not in sys.path:
+        sys.path.insert(0, root_str)
+
+    # S'assurer que le dossier src est aussi dans sys.path (permet `import service`)
+    src_str = str(src_dir)
+    if src_str not in sys.path:
+        sys.path.insert(0, src_str)
+
     # Assurer un répertoire multiprocess Prometheus valide si jamais activé par défaut
     _TMP_PROM_DIR = tempfile.mkdtemp(prefix="pytest_prom_multiproc_")
     os.environ["PROMETHEUS_MULTIPROC_DIR"] = _TMP_PROM_DIR
+
 
 
 def pytest_sessionfinish(session, exitstatus):
@@ -23,6 +41,7 @@ def pytest_sessionfinish(session, exitstatus):
     if _TMP_PROM_DIR and os.path.isdir(_TMP_PROM_DIR):
         shutil.rmtree(_TMP_PROM_DIR, ignore_errors=True)
         _TMP_PROM_DIR = None
+
 
 
 def pytest_terminal_summary(terminalreporter, exitstatus, config):
