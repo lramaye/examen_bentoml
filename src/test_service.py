@@ -1,6 +1,5 @@
 # Désactive Prometheus
 import os
-os.environ.setdefault("BENTOML_CONFIG_OPTIONS", "api_server.metrics.enabled=false,tracing.enabled=false")
 import time
 import jwt
 import numpy as np
