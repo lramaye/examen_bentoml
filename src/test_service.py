@@ -6,11 +6,11 @@ import pytest
 from starlette.testclient import TestClient
 from service import rf_service, create_jwt_token, JWT_SECRET_KEY, JWT_ALGORITHM
 
+# Désactive Prometheus
+os.environ["BENTOML_DISABLE_PROMETHEUS"] = "true"
 
 @pytest.fixture(scope="module")
 def client():
-    # Désactive Prometheus
-    os.environ["BENTOML_DISABLE_PROMETHEUS"] = "true"
     app = rf_service.asgi_app
     with TestClient(app) as c:
         yield c
