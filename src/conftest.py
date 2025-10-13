@@ -1,4 +1,5 @@
 import os
+os.environ.setdefault("BENTOML_CONFIG_OPTIONS", "api_server.metrics.enabled=false,tracing.enabled=false")
 import sys
 from pathlib import Path
 import pytest
@@ -7,9 +8,6 @@ import pytest
 
 def pytest_sessionstart(session):
     # Désactivation explicite des métriques pour différentes versions de BentoML
-    os.environ.setdefault("BENTOML_DISABLE_PROMETHEUS", "true")
-    os.environ.setdefault("BENTOML_DISABLE_METRICS", "1")
-
     # Ajouter les chemins nécessaires pour que `import service` et `from src import service` fonctionnent
     src_dir = Path(__file__).resolve().parent  # .../src
     repo_root = src_dir.parent                 # projet racine
