@@ -1,3 +1,5 @@
+import os
+os.environ["BENTOML_CONFIG_OPTIONS"] = "api_server.metrics.enabled=false;tracing.enabled=false"
 import numpy as np
 import bentoml
 from bentoml.io import JSON
