@@ -1,5 +1,5 @@
 import os
-os.environ.setdefault("BENTOML_CONFIG_OPTIONS", "api_server.metrics.enabled=false,tracing.enabled=false")
+os.environ.setdefault("BENTOML_CONFIG_OPTIONS", "api_server.metrics.enabled=false;tracing.enabled=false")
 import sys
 from pathlib import Path
 import pytest
