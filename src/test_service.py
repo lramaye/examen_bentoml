@@ -1,13 +1,12 @@
+# Désactive Prometheus
+import os
+os.environ["BENTOML_DISABLE_PROMETHEUS"] = "true"
 import time
 import jwt
-import os
 import numpy as np
 import pytest
 from starlette.testclient import TestClient
 from service import rf_service, create_jwt_token, JWT_SECRET_KEY, JWT_ALGORITHM
-
-# Désactive Prometheus
-os.environ["BENTOML_DISABLE_PROMETHEUS"] = "true"
 
 @pytest.fixture(scope="module")
 def client():
