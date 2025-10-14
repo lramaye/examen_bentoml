@@ -53,5 +53,6 @@ print("MSE :", mse_test)
 
 # Enregistrer le modèle dans le Model Store de BentoML (BentoML mettra à jour l'alias "latest" automatiquement)
 model_ref = bentoml.sklearn.save_model("students_rf", model)
+bentoml.models.tag.add(model_ref, "students_rf:latest")
 
 print(f"Modèle enregistré sous : {model_ref}")
