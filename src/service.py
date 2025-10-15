@@ -4,6 +4,7 @@ from bentoml.io import JSON
 from bentoml import Context
 from pydantic import BaseModel
 from starlette.responses import JSONResponse
+from starlette.exceptions import HTTPException
 from starlette.middleware.base import BaseHTTPMiddleware
 import jwt
 from datetime import datetime, timedelta
@@ -81,7 +82,7 @@ def login(credentials: dict) -> dict:
         token = create_jwt_token(username)
         return {"token": token}
     else:
-        return JSONResponse(status_code=401, content={"detail": "Invalid credentials"})
+        raise HTTPException(status_code=401, detail="Invalid credentials")
 
 # Endpoint predict
 @rf_service.api(
