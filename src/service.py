@@ -103,7 +103,8 @@ async def classify(input_data: InputModel, ctx: Context) -> dict:
     ])
 
     # Prédiction
-    result = await students_rf_runner.predict.async_run(input_series.reshape(1, -1))
+    #result = await students_rf_runner.predict.async_run(input_series.reshape(1, -1))
+    result = await students_rf_runner.run.async_run(input_series.reshape(1, -1))
 
     return {
         "prediction": result.tolist(),
