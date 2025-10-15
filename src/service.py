@@ -74,7 +74,7 @@ students_rf_runner = RunnerProxy(_students_rf_runner)
 
 # service BentoML
 # Register the real runner with the Service
-rf_service = bentoml.Service(name="admissions_prediction", runners=[_students_rf_runner])
+rf_service = bentoml.Service(name="LoicRamaye_AdmissionsPrediction", runners=[_students_rf_runner])
 
 # Ajout du middleware JWT
 rf_service.add_asgi_middleware(JWTAuthMiddleware)

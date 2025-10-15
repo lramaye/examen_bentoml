@@ -4,9 +4,9 @@ Ce répertoire contient une application BentoML de régression Random Forest (ad
 
 Cette version est vérifiée pour fonctionner avec:
 - Python 3.11
-- BentoML 1.4.26
+- BentoML 1.1.11
 
-Le fichier bentofile.yaml épingle BentoML 1.4.26 et fixe Python 3.11 pour l’image de conteneur BentoML.
+Le fichier bentofile.yaml épingle BentoML 1.1.11 et fixe Python 3.11 pour l’image de conteneur BentoML.
 
 ## Structure du projet
 ```
@@ -29,19 +29,10 @@ Le fichier bentofile.yaml épingle BentoML 1.4.26 et fixe Python 3.11 pour l’i
 ## Pré-requis
 - Installer Python 3.11
 - Installer Docker (pour containeriser)
-- Installer BentoML CLI: sera installé via requirements.txt, sinon `pip install bentoml==1.4.26`
-- Télécharger le dataset: https://datascientest.s3-eu-west-1.amazonaws.com/examen_bentoml/admissions.csv et placer le fichier dans `data/raw/`
+- Installer BentoML CLI: sera installé via requirements.txt, sinon `pip install bentoml==1.2.20`
+- Installer par prepare_data, sinon télécharger le dataset: https://datascientest.s3-eu-west-1.amazonaws.com/examen_bentoml/admissions.csv et placer le fichier dans `data/raw/`
 
 ## Créer l’environnement Python 3.11
-
-Windows (PowerShell):
-```
-cd C:\git\examen_bentoml
-py -3.11 -m venv .venv
-.\.venv\Scripts\Activate
-pip install -U pip
-pip install -r requirements.txt
-```
 
 Linux/macOS (bash/zsh):
 ```
@@ -55,8 +46,8 @@ pip install -r requirements.txt
 ## Préparation des données et entraînement
 Exécuter la séquence suivante depuis la racine du projet (environnement activé):
 ```
-python3 src/prepare_data.py
-python3 src/grid_search.py     # écrit models/best_params.pkl
+python3 src/prepare_data.py     # telecharge les données
+python3 src/grid_search.py     # grid search utilisé par train_model : models/best_params.pkl
 python3 src/train_model.py     # entraîne et enregistre le modèle BentoML "students_rf"
 ```
 Vérifier que le modèle est bien dans le Model Store BentoML:
@@ -64,42 +55,34 @@ Vérifier que le modèle est bien dans le Model Store BentoML:
 bentoml models list
 ```
 
-## Servir le service localement (sans Docker)
-Lancer le service BentoML directement depuis le code source:
-```
-bentoml serve src.service:rf_service --reload
-```
-Par défaut, l’API écoute sur http://127.0.0.1:3000
-
-Tester les endpoints avec le script fourni (authentification + prédiction):
-```
-source .venv/bin/activate
-python src/test.py
-```
-Ce script:
-- appelle POST /login avec des identifiants de démonstration (user123/password123)
-- récupère un token JWT
-- appelle POST /v1/models/rf_regressor/predict avec le header Authorization: Bearer <token>
-
 ## Construction du Bento et image Docker
 Construire le Bento (archive exécutable) à partir du bentofile.yaml:
 ```
-bentoml build
-```
-Containeriser le Bento en image Docker:
-```
-bentoml containerize rf_service:latest
+bentoml build --containerize
 ```
 Lancer le conteneur:
+Récuperer l'id de l'image et ajouter à la commande docker run en remplacant xxx par l'id
 ```
-docker run --rm -p 3000:3000 rf_service:latest
+docker run --rm -d -p 3001:3000 LoicRamaye_AdmissionsPrediction:xxx
 ```
-Puis tester à nouveau:
+test rapide:
 ```
-python src/test.py
+python src/test.py  # test la connexion au service
+```
+
+Pytest :
+```
+PYTHONPATH=src python -m pytest -v src/test_service.py --disable-warnings
+```
+
+## Sauvegarde de l'image docker 
+```
+docker save -o bento_image.tar LoicRamaye_AdmissionsPrediction
 ```
 
 ## Notes de compatibilité
 - Python 3.11: les dépendances de requirements.txt sont compatibles (numpy, pandas, scikit-learn, PyJWT, etc.).
-- BentoML 1.1.0: utilisé dans requirements.txt et épinglé dans bentofile.yaml. Le service utilise un Runner sklearn et des endpoints JSON compatibles 1.4.x.
+- BentoML 1.2.20: utilisé dans requirements.txt et épinglé dans bentofile.yaml
 - Les chemins sont relatifs à la racine du projet; exécutez les scripts depuis cette racine.
+- Emplacement de bentos : /home/ubuntu/bentoml/bentos
+
