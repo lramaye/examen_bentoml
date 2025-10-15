@@ -1,12 +1,12 @@
-# Examen BentoML (Python 3.11 + BentoML 1.1.0)
+# Examen BentoML (Python 3.11 + BentoML 1.2.20)
 
 Ce répertoire contient une application BentoML de régression Random Forest (admissions étudiants) avec authentification JWT et un pipeline de préparation/entraînement.
 
 Cette version est vérifiée pour fonctionner avec:
 - Python 3.11
-- BentoML 1.1.11
+- BentoML 1.2.20
 
-Le fichier bentofile.yaml épingle BentoML 1.1.11 et fixe Python 3.11 pour l’image de conteneur BentoML.
+Le fichier bentofile.yaml épingle BentoML 1.2.20 et fixe Python 3.11 pour l’image de conteneur BentoML.
 
 ## Structure du projet
 ```
@@ -20,7 +20,10 @@ Le fichier bentofile.yaml épingle BentoML 1.1.11 et fixe Python 3.11 pour l’i
 │   ├── grid_search.py
 │   ├── train_model.py
 │   ├── service.py
-│   └── test.py
+│   ├── test.py
+│   ├── check_structure.py
+│   ├── conftest.py
+│   └── test_service.py
 ├── bentofile.yaml
 ├── requirements.txt
 └── README.md
@@ -34,7 +37,7 @@ Le fichier bentofile.yaml épingle BentoML 1.1.11 et fixe Python 3.11 pour l’i
 
 ## Créer l’environnement Python 3.11
 
-Linux/macOS (bash/zsh):
+Linux:
 ```
 cd ~/examen_bentoml
 python3.11 -m venv .venv
@@ -63,11 +66,13 @@ bentoml build --containerize
 Lancer le conteneur:
 Récuperer l'id de l'image et ajouter à la commande docker run en remplacant xxx par l'id
 ```
-docker run --rm -d -p 3001:3000 LoicRamaye_AdmissionsPrediction:xxx
+docker run --rm -d -p 3001:3000 loicramaye_admissionsprediction:xxx
+# exemple
+docker run --rm -d -p 3001:3000 loicramaye_admissionsprediction:4eqowzfjr63aqcv4
 ```
 test rapide:
 ```
-python src/test.py  # test la connexion au service
+python3 src/test.py  # test la connexion au service
 ```
 
 Pytest :
@@ -77,7 +82,7 @@ PYTHONPATH=src python -m pytest -v src/test_service.py --disable-warnings
 
 ## Sauvegarde de l'image docker 
 ```
-docker save -o bento_image.tar LoicRamaye_AdmissionsPrediction
+docker save -o bento_image.tar loicramaye_admissionsprediction
 ```
 
 ## Notes de compatibilité
