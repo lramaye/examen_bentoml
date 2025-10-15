@@ -74,7 +74,7 @@ rf_service.add_asgi_middleware(JWTAuthMiddleware)
 
 # Endpoint login
 @rf_service.api(input=JSON(), output=JSON(), route="/login")
-def login(credentials: dict) -> dict:
+def login(credentials: dict, ctx: Context) -> dict:
     username = credentials.get("username")
     password = credentials.get("password")
 
@@ -82,7 +82,8 @@ def login(credentials: dict) -> dict:
         token = create_jwt_token(username)
         return {"token": token}
     else:
-        raise HTTPException(status_code=401, detail="Invalid credentials")
+        ctx.response.status_code = 401
+        return {"detail": "Invalid credentials"}
 
 # Endpoint predict
 @rf_service.api(
