@@ -22,10 +22,10 @@ def mock_runner(monkeypatch):
         return np.array([0.4242])
 
     monkeypatch.setattr(
-        service_module.students_rf_runner.predict,
+        service_module.students_rf_runner,
         "async_run",
         fake_async_run,
-        raising=False,
+        raising=True,
     )
     yield
 
