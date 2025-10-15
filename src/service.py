@@ -51,10 +51,22 @@ class InputModel(BaseModel):
     Research: int
 
 # model runner
-students_rf_runner = bentoml.sklearn.get("students_rf:latest").to_runner()
+# Use a mutable proxy to allow monkeypatching in tests while keeping the real Runner frozen
+class RunnerProxy:
+    def __init__(self, runner):
+        self._runner = runner
+
+    async def async_run(self, arr):
+        return await self._runner.async_run(arr)
+
+# Real BentoML runner (frozen attrs class)
+_students_rf_runner = bentoml.sklearn.get("students_rf:latest").to_runner()
+# Proxy exposed for tests to monkeypatch
+students_rf_runner = RunnerProxy(_students_rf_runner)
 
 # service BentoML
-rf_service = bentoml.Service(name="admissions_prediction", runners=[students_rf_runner])
+# Register the real runner with the Service
+rf_service = bentoml.Service(name="admissions_prediction", runners=[_students_rf_runner])
 
 # Ajout du middleware JWT
 rf_service.add_asgi_middleware(JWTAuthMiddleware)
