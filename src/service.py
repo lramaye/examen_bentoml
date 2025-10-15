@@ -8,6 +8,13 @@ from starlette.exceptions import HTTPException
 from starlette.middleware.base import BaseHTTPMiddleware
 import jwt
 from datetime import datetime, timedelta
+import sys
+
+# Ensure a single module instance regardless of being imported as 'service' or 'src.service'
+_mod = sys.modules.get(__name__)
+if _mod is not None:
+    sys.modules.setdefault('service', _mod)
+    sys.modules.setdefault('src.service', _mod)
 
 # Secret key and algorithm for JWT authentication
 JWT_SECRET_KEY = "your_jwt_secret_key_here"
