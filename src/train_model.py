@@ -5,7 +5,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
 import bentoml
 
-# Chargement des données d'entraînement et de test
+# Chargement des données d'entraînement et de tests
 X_train = pd.read_csv("data/processed/X_train.csv")
 X_test = pd.read_csv("data/processed/X_test.csv")
 y_train = pd.read_csv("data/processed/y_train.csv").values.flatten()
@@ -31,7 +31,7 @@ model = RandomForestRegressor(**best_params)
 # Fit du modèle
 model.fit(X_train, y_train)
 
-# Éval sur le jeu de test
+# Éval sur le jeu de tests
 y_pred = model.predict(X_test)
 mse_test = mean_squared_error(y_test, y_pred)
 # Get the model accuracy

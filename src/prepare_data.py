@@ -56,7 +56,7 @@ def prepare_dataset(raw_csv_path: str) -> pd.DataFrame:
 
 
 def split_and_save(df: pd.DataFrame, processed_dir: str, test_size: float = 0.2, random_state: int = 42) -> None:
-    # separation jeu entrainement et jeu de test
+    # separation jeu entrainement et jeu de tests
     target_col = None
     target_col = "Chance_of_Admit"
 
