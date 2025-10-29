@@ -72,12 +72,12 @@ docker run --rm -d -p 3001:3000 loicramaye_admissionsprediction:4eqowzfjr63aqcv4
 ```
 test rapide:
 ```
-python3 src/test.py  # test la connexion au service
+python3 tests/test.py  # test la connexion au service
 ```
 
 Pytest :
 ```
-PYTHONPATH=src python -m pytest -v src/test_service.py --disable-warnings
+PYTHONPATH=src python -m pytest -v tests/test_service.py --disable-warnings
 ```
 
 ## Sauvegarde de l'image docker 
